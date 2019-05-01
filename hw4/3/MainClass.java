@@ -1,24 +1,45 @@
 import java.util.Scanner;
 
 public class MainClass {
-    public static void main(String args[]) {
-        /*
-        Scanner in = new Scanner(System.in);
-        System.out.print("Enter number of elements: ");
-        int n = in.nextInt();
+    /**
+     * Helper function to insert values into a SortedList and print information
+     * 
+     * @param list  SortedList to insert into
+     * @param value Integer value to insert.
+     */
+    public static void insert_array(SortedList list, int value) {
+        System.out.println("Pre-insert list:");
+        System.out.println(list);
 
-        int[] array = new int[n];
-        System.out.println("Enter " + n + " integers in ascending order");
-    
-        for (int c = 0; c < n; c++) {
-            array[c] = in.nextInt();
+        int pos = list.search(value);
+        if (pos >= 0) {
+            System.out.println(value + " was found at " + pos);
+        } else {
+            System.out.println(value +
+                " was not found, insertion point at " + (-pos));
         }
-    
-        System.out.println("Enter value to find");
-        int search = in.nextInt();
-        in.close();
-        */
 
+        list.insert(value);
+
+        System.out.println("Post-insert list:");
+        System.out.println(list);
+        pos = list.search(value);
+        if (pos < 0) {
+            System.out.println("ERROR: Failed to insert value! Insertion point at "
+            + (-pos));
+            return;
+        }
+
+        System.out.println(value + " was found at " + pos);
+
+        if (!list.is_sorted()) {
+            System.out.println("ERROR: List is not sorted!");
+            System.exit(1);
+        }
+    }
+
+    public static void main(String args[]) {
+        // starting values
         int[] array = new int[] {
             38, 86, 31, 60,   2,
             37, 91, 25, 96,  23,
@@ -28,27 +49,14 @@ public class MainClass {
         };
         
         SortedList list = new SortedList(array);
-
+        System.out.println("Initial array:");
         System.out.println(list);
 
-        int pos_exists   = list.search(96);
-        int pos_nonexist = list.search(70);
-        System.out.println("96 @ " + pos_exists + ", 70 @ " + pos_nonexist);
+        // numbers to insert
+        int[] to_insert = new int[] {8, 27, 31, 87, 96, 99};
 
-        list.insert(70);
-
-        System.out.println(list);
-        pos_nonexist = list.search(70);
-        System.out.println("70 @ " + pos_nonexist);
-
-
-        /*
-        if (pos < 0) {
-            System.out.println("Couldn't find " + search + " in list");
-            return;
+        for (int i = 0; i < to_insert.length; i++) {
+            insert_array(list, to_insert[i]);
         }
-
-        System.out.println(search + " found at location " + pos);
-        */
     }
 }
