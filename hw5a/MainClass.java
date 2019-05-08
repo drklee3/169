@@ -1,10 +1,29 @@
-import java.lang.Integer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.stream.Collectors;
 
 public class MainClass {
+    /**
+     * Converts an integer timestamp to a date or "now" to the current Date
+     * 
+     * @param date String or integer to create a date from
+     * @return     Date object
+     * @throws IllegalArgumentException if date is not "now" or an integer
+     */
+    public static Date getDate(Object date) {
+        if (date == "now") {
+            return new Date();
+        }
+        
+        if (date instanceof Integer) {
+            return new Date((long) date);
+        }
+
+        throw new IllegalArgumentException("Invalid date type! Found "
+            + date + ", " + date.getClass() + ".");
+    }
+
     /**
      * Parses an ArrayList<Object> of the class name, followed by parameters.
      * Assumes input is correctly formatted, throws Exceptions if there are
@@ -14,8 +33,7 @@ public class MainClass {
      * @return     ArrayList<Food> of parsed foods
      * @throws IllegalArgumentException if input list is not formatted correctly
      */
-    public static ArrayList<Food> parseFoodsList(ArrayList<Object> list)
-        throws IllegalArgumentException {
+    public static ArrayList<Food> parseFoodsList(ArrayList<Object> list) {
         // create a new ArrayList<Food> for parsed Food objects
         ArrayList<Food> foods = new ArrayList<Food>();
 
@@ -30,62 +48,32 @@ public class MainClass {
                     + next.getClass() + ".");
             }
 
-            // set to null to prevent "variable name might not have been
-            // initialized" error, should never be null when it's used if
-            // "Fruit" is matched in the first switch statement below
-            String name = null;
-            Object ripe;
-            Date ripe_date;
-
             // get type of next object and get arguments
             switch (next.toString()) {
                 case "Food":
                     // arguments: name
-                    foods.add(new Food(iter.next().toString()));
-                    // move to next in ArrayList
-                    continue;
+                    foods.add(new Food(iter
+                        .next()
+                        .toString()
+                    ));
+                    break;
                 case "Fruit":  // Fruit(ripe, name)
-                    name = iter.next().toString();
+                    // name is given first in ArrayList but is second parameter
+                    String name = iter.next().toString();
+                    foods.add(new Fruit(
+                        getDate(iter.next()),
+                        name
+                    ));
+                    break;
                 case "Apple":  // Apple(ripe)
+                    foods.add(new Apple(getDate(iter.next())));
+                    break;
                 case "Orange": // Orange(ripe)
-                    // could be an int or string
-                    ripe = iter.next();
+                    foods.add(new Orange(getDate(iter.next())));
                     break;
                 default:
                     throw new IllegalArgumentException("Unhandled type! Found "
                         + next.getClass() + ".");
-            }
-
-            // ripe should never be null, if it's Food then this is unreachable
-            if (ripe == null) {
-                throw new IllegalArgumentException("Missing ripe time.");
-            }
-
-            // create the date class
-            if (ripe == "now") {
-                ripe_date = new Date();
-            } else if (ripe instanceof Integer) {
-                ripe_date = new Date((long) ripe);
-            } else {
-                throw new IllegalArgumentException("Invalid date type! Found "
-                    + ripe.getClass() + ".");
-            }
-
-            // create the class
-            switch (next.toString()) {
-                case "Fruit":
-                    foods.add(new Fruit(ripe_date, name));
-                    break;
-                case "Apple":
-                    foods.add(new Apple(ripe_date));
-                    break;
-                case "Orange":
-                    foods.add(new Orange(ripe_date));
-                    break;
-                default:
-                    throw new IllegalArgumentException("Unhandled type! Found "
-                        + next.getClass()
-                        + ". This case should be unreachable.");
             }
         }
 
@@ -119,17 +107,22 @@ public class MainClass {
         // mixed type ArrayList :(
         ArrayList<Object> foods = new ArrayList<Object>();
         foods.add("Food");
+        // assuming Orange is the parameter to Food(String name)
+        // "name of the type of the next object, followed by parameter(s) that
+        // should be sent as input to the class’ constructor"
+        // If Orange is treated as a new Object then there would be no valid
+        // constructor parameter for Orange ("Fruit" but requires a Date)
         foods.add("Orange");
         foods.add("Fruit");
         foods.add("Papaya");
-        foods.add(3932728);
+        foods.add(3932728); // Integer(int value) is deprecated
         foods.add("Apple");
         foods.add("now");
         foods.add("Food");
         foods.add("sandwich");
 
         try {
-            // results in Food, Orange, Fruit, Apple, Food
+            // results in Food, Fruit, Apple, Food
             ArrayList<Food> foods_parsed = parseFoodsList(foods);
             System.out.println(foodsToString(foods_parsed));
         } catch (Exception e) {
