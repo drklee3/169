@@ -111,7 +111,7 @@ public class MainClass {
         // "name of the type of the next object, followed by parameter(s) that
         // should be sent as input to the class’ constructor"
         // If Orange is treated as a new Object then there would be no valid
-        // constructor parameter for Orange ("Fruit" but requires a Date)
+        // constructor parameter for Orange (expects Date but finds "Fruit")
         foods.add("Orange");
         foods.add("Fruit");
         foods.add("Papaya");
