@@ -1,4 +1,3 @@
-import com.sun.jdi.InvalidTypeException;
 import java.lang.Integer;
 import java.util.ArrayList;
 import java.util.Date;
@@ -6,7 +5,17 @@ import java.util.Iterator;
 import java.util.stream.Collectors;
 
 public class MainClass {
-    public static ArrayList<Food> parseFoodsList(ArrayList<Object> list) throws Exception {
+    /**
+     * Parses an ArrayList<Object> of the class name, followed by parameters.
+     * Assumes input is correctly formatted, throws Exceptions if there are
+     * problems with input
+     * 
+     * @param list ArrayList<Object> of strings and integers
+     * @return     ArrayList<Food> of parsed foods
+     * @throws IllegalArgumentException if input list is not formatted correctly
+     */
+    public static ArrayList<Food> parseFoodsList(ArrayList<Object> list)
+        throws IllegalArgumentException {
         // create a new ArrayList<Food> for parsed Food objects
         ArrayList<Food> foods = new ArrayList<Food>();
 
@@ -17,10 +26,13 @@ public class MainClass {
             
             // verify if it's a string.  First item **should** be a class name.
             if (!(next instanceof String)) {
-                throw new InvalidTypeException("Invalid type! Found "
+                throw new IllegalArgumentException("Invalid type! Found "
                     + next.getClass() + ".");
             }
 
+            // set to null to prevent "variable name might not have been
+            // initialized" error, should never be null when it's used if
+            // "Fruit" is matched in the first switch statement below
             String name = null;
             Object ripe;
             Date ripe_date;
@@ -53,17 +65,15 @@ public class MainClass {
             if (ripe == "now") {
                 ripe_date = new Date();
             } else if (ripe instanceof Integer) {
-                ripe_date = new Date((int) ripe);
+                ripe_date = new Date((long) ripe);
             } else {
-                throw new InvalidTypeException("Invalid date type! Found "
+                throw new IllegalArgumentException("Invalid date type! Found "
                     + ripe.getClass() + ".");
             }
 
             // create the class
             switch (next.toString()) {
                 case "Fruit":
-                    // should be never null if "Fruit" was matched in the
-                    // previous switch statement
                     foods.add(new Fruit(ripe_date, name));
                     break;
                 case "Apple":
