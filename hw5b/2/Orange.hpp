@@ -8,6 +8,7 @@
 class Orange: public Fruit {
     public:
         Orange(time_t ripe);
+        void prepare();
 };
 
 #endif
