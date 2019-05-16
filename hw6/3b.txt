@@ -1,0 +1,10 @@
+λm.λn.λf.λx.((m f) ((n f) x))
+
+m = func => func
+n = func => func => val
+
+
+m(f)(n(f)(x))
+
+addition:
+applies f to x n times then m times
