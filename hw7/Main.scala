@@ -3,10 +3,35 @@ object Main {
      * [#1] Merges two Lists in alternating order with extra elements at the end
      */
     def alternateList(a: List[Int], b: List[Int]): List[Int] =
-        a.zip(b).flatMap(x => List(x._1, x._2)) ++ {
+        a.zip(b)
+         .flatMap(x => List(x._1, x._2)) ++ {
             if (a.length > b.length) a.takeRight(a.length - b.length)
             else b.takeRight(b.length - a.length)
         };
+    
+    /**
+     * Alternative way for #1 with zipAll and without concatenation but with
+     * more iterations
+     */
+    def alternateListZ(a: List[Int], b: List[Int]): List[Int] = {
+        a.map(Option(_))
+         .zipAll(b.map(Option(_)), None, None)
+         .flatMap(x => List(x._1, x._2))
+         .filter(x => !x.isEmpty)
+         .flatten
+    };
+
+    /**
+     * Another alternative way for #1 by applying zipWithIndex on both Lists,
+     * sorting the combined list by the indexes then getting the value back.
+     * This only works because sortBy is stable.
+     */
+    def alternateListM(a: List[Int], b: List[Int]): List[Int] =
+        List(a, b)
+            .flatMap(_.zipWithIndex) // merges a and b with (val, index)
+            .sortBy(_._2)            // sorts based on index
+            .map(_._1);              // get the value instead of tuples
+    
     
     /**
      * [#2] Applies f to corresponding elements of xs and ys
@@ -16,7 +41,7 @@ object Main {
         f: (Int, Int) => Int
     ): List[Int] =
         xs.zip(ys)
-         .map(t => f(t._1, t._2));
+          .map(t => f(t._1, t._2));
     
     /**
      * [#3] Filters a list based on items tested with f
@@ -37,6 +62,12 @@ object Main {
 
         println(alternateList(arr1, arr2).mkString(", "));
         println(alternateList(arr2, arr1).mkString(", "));
+
+        println(alternateListZ(arr1, arr2).mkString(", "));
+        println(alternateListZ(arr2, arr1).mkString(", "));
+
+        println(alternateListM(arr1, arr2).mkString(", "));
+        println(alternateListM(arr2, arr1).mkString(", "));
 
         // #2
         val xs = List(3, 8, 1, 5);
