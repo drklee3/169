@@ -79,7 +79,7 @@ object Main {
     /**
      * Prints variable number of Lists converted to strings
      */
-    def printLists(lists: List[Int]*) =
+    def printLists(lists: List[Int]*): Unit =
         lists.map(_.mkString(", "))
              .foreach(println);
 
