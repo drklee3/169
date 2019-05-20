@@ -6,7 +6,7 @@ object Main {
         a.zip(b)
          .flatMap(x => List(x._1, x._2)) ++ {
             if (a.length > b.length) a.takeRight(a.length - b.length)
-            else b.takeRight(b.length - a.length)
+            else                     b.takeRight(b.length - a.length)
         };
     
     /**
@@ -17,8 +17,7 @@ object Main {
         a.map(Option(_))
          .zipAll(b.map(Option(_)), None, None)
          .flatMap(x => List(x._1, x._2))
-         .filter(x => !x.isEmpty)
-         .flatten
+         .flatten // get values out of Option(T)s (also removes Nones)
     };
 
     /**
@@ -36,18 +35,40 @@ object Main {
     /**
      * [#2] Applies f to corresponding elements of xs and ys
      */
-    def applyList(xs: List[Int],
+    def applyList(
+        xs: List[Int],
         ys: List[Int],
-        f: (Int, Int) => Int
+        f: (Int, Int) => Int,
     ): List[Int] =
         xs.zip(ys)
           .map(t => f(t._1, t._2));
+    
+    /**
+     * Alternative recursive way for #2
+     */
+    def applyListR(
+        xs: List[Int],
+        ys: List[Int],
+        f: (Int, Int) => Int,
+    ): List[Int] =
+        if (xs.isEmpty || ys.isEmpty) List()
+        else List(f(xs.head, ys.head)) ++
+            applyListR(xs.drop(1), ys.drop(1), f);
+
     
     /**
      * [#3] Filters a list based on items tested with f
      */
     def filterList(xs: List[Int], f: Int => Boolean): List[Int] =
         xs.filter(f);
+    
+    /**
+     * Alternative recursive way for #3 
+     */
+    def filterListR(xs: List[Int], f: Int => Boolean): List[Int] =
+        if (xs.isEmpty) List()
+        else if (f(xs.head)) List(xs.head) ++ filterListR(xs.drop(1), f)
+        else filterListR(xs.drop(1), f);
     
     /**
      * [#4] Curried version of #3
@@ -60,26 +81,31 @@ object Main {
         val arr1 = List(1, 2, 3, 4);
         val arr2 = List(7, 8, 9, 10, 11, 12);
 
-        println(alternateList(arr1, arr2).mkString(", "));
-        println(alternateList(arr2, arr1).mkString(", "));
-
+        println(alternateList (arr1, arr2).mkString(", "));
         println(alternateListZ(arr1, arr2).mkString(", "));
-        println(alternateListZ(arr2, arr1).mkString(", "));
-
         println(alternateListM(arr1, arr2).mkString(", "));
+
+        println(alternateList (arr2, arr1).mkString(", "));
+        println(alternateListZ(arr2, arr1).mkString(", "));
         println(alternateListM(arr2, arr1).mkString(", "));
+
 
         // #2
         val xs = List(3, 8, 1, 5);
         val ys = List(12, 6, 23, 1, 8, 4);
 
-        println(applyList(xs, ys, (x, y) => x + y    ).mkString(", "));
-        println(applyList(xs, ys, (x, y) => x * x + y).mkString(", "));
+        println(applyList (xs, ys, (x, y) => x + y    ).mkString(", "));
+        println(applyListR(xs, ys, (x, y) => x + y    ).mkString(", "));
+
+        println(applyList (xs, ys, (x, y) => x * x + y).mkString(", "));
+        println(applyListR(xs, ys, (x, y) => x * x + y).mkString(", "));
 
         // #3
         val xs2 = 1.to(20).toList;
-        println(filterList(xs2, x => x % 2 == 0).mkString(", "));
-        println(filterList(xs2, x => x > 10    ).mkString(", "));
+        println(filterList (xs2, x => x % 2 == 0).mkString(", "));
+        println(filterListR(xs2, x => x % 2 == 0).mkString(", "));
+        println(filterList (xs2, x => x > 10    ).mkString(", "));
+        println(filterListR(xs2, x => x > 10    ).mkString(", "));
 
         // #4
         println(filterList2(x => x % 2 == 0)(xs2).mkString(", "));
