@@ -75,40 +75,53 @@ object Main {
      */
     def filterList2(f: Int => Boolean): List[Int] => List[Int] =
         (xs) => xs.filter(f);
+    
+    /**
+     * Prints variable number of Lists converted to strings
+     */
+    def printLists(lists: List[Int]*) =
+        lists.map(_.mkString(", "))
+             .foreach(println);
 
     def main(args: Array[String]): Unit = {
         // #1
         val arr1 = List(1, 2, 3, 4);
         val arr2 = List(7, 8, 9, 10, 11, 12);
 
-        println(alternateList (arr1, arr2).mkString(", "));
-        println(alternateListZ(arr1, arr2).mkString(", "));
-        println(alternateListM(arr1, arr2).mkString(", "));
-
-        println(alternateList (arr2, arr1).mkString(", "));
-        println(alternateListZ(arr2, arr1).mkString(", "));
-        println(alternateListM(arr2, arr1).mkString(", "));
-
-
-        // #2
+        // #2 inputs
         val xs = List(3, 8, 1, 5);
         val ys = List(12, 6, 23, 1, 8, 4);
 
-        println(applyList (xs, ys, (x, y) => x + y    ).mkString(", "));
-        println(applyListR(xs, ys, (x, y) => x + y    ).mkString(", "));
-
-        println(applyList (xs, ys, (x, y) => x * x + y).mkString(", "));
-        println(applyListR(xs, ys, (x, y) => x * x + y).mkString(", "));
-
-        // #3
+        // #3 inputs
         val xs2 = 1.to(20).toList;
-        println(filterList (xs2, x => x % 2 == 0).mkString(", "));
-        println(filterListR(xs2, x => x % 2 == 0).mkString(", "));
-        println(filterList (xs2, x => x > 10    ).mkString(", "));
-        println(filterListR(xs2, x => x > 10    ).mkString(", "));
 
-        // #4
-        println(filterList2(x => x % 2 == 0)(xs2).mkString(", "));
-        println(filterList2(x => x > 10    )(xs2).mkString(", "));
+        printLists(
+            // #1
+            alternateList (arr1, arr2),
+            alternateListZ(arr1, arr2),
+            alternateListM(arr1, arr2),
+
+            alternateList (arr2, arr1),
+            alternateListZ(arr2, arr1),
+            alternateListM(arr2, arr1),
+
+            // #2
+            applyList (xs, ys, (x, y) => x + y    ),
+            applyListR(xs, ys, (x, y) => x + y    ),
+
+            applyList (xs, ys, (x, y) => x * x + y),
+            applyListR(xs, ys, (x, y) => x * x + y),
+
+            // #3
+            filterList (xs2, x => x % 2 == 0),
+            filterListR(xs2, x => x % 2 == 0),
+
+            filterList (xs2, x => x > 10    ),
+            filterListR(xs2, x => x > 10    ),
+
+            // #4
+            filterList2(x => x % 2 == 0)(xs2),
+            filterList2(x => x > 10    )(xs2),
+        );
     }
 }
