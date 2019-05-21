@@ -117,8 +117,8 @@ object Main {
             alternateListR(arr2, arr1),
 
             // #2
-            applyList (xs, ys, (x, y) => x + y    ),
-            applyListR(xs, ys, (x, y) => x + y    ),
+            applyList (xs, ys, (x, y) => x + y),
+            applyListR(xs, ys, (x, y) => x + y),
 
             applyList (xs, ys, (x, y) => x * x + y),
             applyListR(xs, ys, (x, y) => x * x + y),
@@ -127,8 +127,8 @@ object Main {
             filterList (xs2, x => x % 2 == 0),
             filterListR(xs2, x => x % 2 == 0),
 
-            filterList (xs2, x => x > 10    ),
-            filterListR(xs2, x => x > 10    ),
+            filterList (xs2, x => x > 10),
+            filterListR(xs2, x => x > 10),
 
             // #4
             filterList2(x => x % 2 == 0)(xs2),
