@@ -8,17 +8,16 @@ object Main {
             if (a.length > b.length) a.takeRight(a.length - b.length)
             else                     b.takeRight(b.length - a.length)
         };
-    
+
     /**
      * Alternative way for #1 with zipAll and without concatenation but with
      * more iterations
      */
-    def alternateListZ(a: List[Int], b: List[Int]): List[Int] = {
+    def alternateListZ(a: List[Int], b: List[Int]): List[Int] =
         a.map(Option(_))
          .zipAll(b.map(Option(_)), None, None)
          .flatMap(x => List(x._1, x._2))
-         .flatten // get values out of Option(T)s (also removes Nones)
-    };
+         .flatten; // get values out of Option(T)s (also removes Nones)
 
     /**
      * Another alternative way for #1 by applying zipWithIndex on both Lists,
@@ -31,7 +30,17 @@ object Main {
             .sortBy(_._2)            // sorts based on index
             .map(_._1);              // get the value instead of tuples
     
-    
+    /**
+     * Recursive way for #1 with prepending
+     */
+    def alternateListR(a: List[Int], b: List[Int]): List[Int] =
+        if      (a.isEmpty) b
+        else if (b.isEmpty) a
+        else     a.head ::
+                 b.head ::
+                 alternateListR(a.tail, b.tail);
+
+
     /**
      * [#2] Applies f to corresponding elements of xs and ys
      */
@@ -53,7 +62,7 @@ object Main {
     ): List[Int] =
         if (xs.isEmpty || ys.isEmpty) Nil
         else f(xs.head, ys.head) ::
-            applyListR(xs.drop(1), ys.drop(1), f);
+            applyListR(xs.tail, ys.tail, f);
 
     
     /**
@@ -66,15 +75,17 @@ object Main {
      * Alternative recursive way for #3 
      */
     def filterListR(xs: List[Int], f: Int => Boolean): List[Int] =
-        if (xs.isEmpty) List()
-        else if (f(xs.head)) xs.head :: filterListR(xs.drop(1), f)
-        else filterListR(xs.drop(1), f);
+        if (xs.isEmpty) Nil
+        else if (f(xs.head)) xs.head :: filterListR(xs.tail, f)
+        else filterListR(xs.tail, f);
     
     /**
      * [#4] Curried version of #3
      */
     def filterList2(f: Int => Boolean): List[Int] => List[Int] =
-        (xs) => xs.filter(f);
+        (xs) => if (xs.isEmpty) Nil
+            else if (f(xs.head)) xs.head :: filterListR(xs.tail, f)
+            else filterListR(xs.tail, f);
     
     /**
      * Prints variable number of Lists converted to strings
@@ -100,10 +111,12 @@ object Main {
             alternateList (arr1, arr2),
             alternateListZ(arr1, arr2),
             alternateListM(arr1, arr2),
+            alternateListR(arr1, arr2),
 
             alternateList (arr2, arr1),
             alternateListZ(arr2, arr1),
             alternateListM(arr2, arr1),
+            alternateListR(arr2, arr1),
 
             // #2
             applyList (xs, ys, (x, y) => x + y    ),
