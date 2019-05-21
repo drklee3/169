@@ -40,7 +40,6 @@ object Main {
                  b.head ::
                  alternateListR(a.tail, b.tail);
 
-
     /**
      * [#2] Applies f to corresponding elements of xs and ys
      */
@@ -64,7 +63,6 @@ object Main {
         else f(xs.head, ys.head) ::
             applyListR(xs.tail, ys.tail, f);
 
-    
     /**
      * [#3] Filters a list based on items tested with f
      */
