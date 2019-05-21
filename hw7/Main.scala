@@ -51,8 +51,8 @@ object Main {
         ys: List[Int],
         f: (Int, Int) => Int,
     ): List[Int] =
-        if (xs.isEmpty || ys.isEmpty) List()
-        else List(f(xs.head, ys.head)) ++
+        if (xs.isEmpty || ys.isEmpty) Nil
+        else f(xs.head, ys.head) ::
             applyListR(xs.drop(1), ys.drop(1), f);
 
     
@@ -67,7 +67,7 @@ object Main {
      */
     def filterListR(xs: List[Int], f: Int => Boolean): List[Int] =
         if (xs.isEmpty) List()
-        else if (f(xs.head)) List(xs.head) ++ filterListR(xs.drop(1), f)
+        else if (f(xs.head)) xs.head :: filterListR(xs.drop(1), f)
         else filterListR(xs.drop(1), f);
     
     /**
@@ -84,7 +84,7 @@ object Main {
              .foreach(println);
 
     def main(args: Array[String]): Unit = {
-        // #1
+        // #1 inputs
         val arr1 = List(1, 2, 3, 4);
         val arr2 = List(7, 8, 9, 10, 11, 12);
 
