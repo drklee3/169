@@ -102,13 +102,13 @@ object Main {
             println("Hello World");
         };
 
-        val l1 = setList(List(1, 3, 5, 9, 11));
-        val l2 = setList(List(1, 3, 5, 9, 11, 12));
+        val s1 = setList(List(1, 3, 5, 9, 11));
+        val s2 = setList(List(1, 3, 5, 9, 11, 12));
 
-        printSet(l1);
-        printSet(l2);
+        printSet(s1);
+        printSet(s2);
 
-        println(forall(l1, x => x % 2 == 1)); // true
-        println(forall(l2, x => x % 2 == 1)); // false
+        println(forall(s1, x => x % 2 == 1)); // true
+        println(forall(s2, x => x % 2 == 1)); // false
     }
 }

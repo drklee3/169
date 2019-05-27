@@ -29,7 +29,7 @@ object Main {
             .flatMap(_.zipWithIndex) // merges a and b with (val, index)
             .sortBy(_._2)            // sorts based on index
             .map(_._1);              // get the value instead of tuples
-    
+
     /**
      * Recursive way for #1 with prepending
      */
