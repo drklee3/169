@@ -110,5 +110,21 @@ object Main {
 
         println(forall(s1, x => x % 2 == 1)); // true
         println(forall(s2, x => x % 2 == 1)); // false
+
+        // test our Set object
+
+        val s3 = new mySet(singletonSet(4));              // 4
+        val s4 = new mySet(singletonSet(5));              // 5
+        val s5 = new mySet(singletonSet(8)) \/ s4 \/ s3;  // 4, 5, 8
+        val s6 = new mySet(singletonSet(10)) \/ s4 \/ s3; // 4, 5, 10
+        val s7 = s5 /\ s6;                                // 4, 5
+        val s8 = s6 - s5;                                 // 10
+        
+        println(s3);
+        println(s4);
+        println(s5);
+        println(s6);
+        println(s7);
+        println(s8);
     }
 }
