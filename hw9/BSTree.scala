@@ -17,7 +17,7 @@ abstract class BSTree {
     /**
      * Depth of deepest Leaf
      */
-    def depth(): Int;
+    def depth: Int;
     
     /**
      * True if this is an exact subtree of that

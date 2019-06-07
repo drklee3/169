@@ -1,0 +1,9 @@
+Functional programming, while potentially daunting to some, provides benefits in
+more performant and correct code. By having immutability and statelessness, it
+allows for programs to be easily parallelized across multiple threads or
+processes.  With this core idea, functional programming can be applied to
+many everyday languages now, including Python and JavaScript. When using
+functional styled programming, logic can be abstracted to functions that carry
+out smaller tasks, then brought together again with functional collection
+methods such as map() and reduce() to make programs both have the benefits
+mentioned above and be more concise. 

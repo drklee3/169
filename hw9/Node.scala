@@ -1,5 +1,3 @@
-import scala.math.max;
-
 case class Node(value: Int, left: BSTree, right: BSTree) extends BSTree {
     def member(x: Int): Boolean = {
         if (value == x) true
@@ -8,8 +6,8 @@ case class Node(value: Int, left: BSTree, right: BSTree) extends BSTree {
     }
 
     def insert(x: Int): BSTree =
-        if (x < value) new Node(value, left.insert(x), right)
-        else if (x > value) new Node(value, left, right insert x) 
+        if (x < value) Node(value, left.insert(x), right)
+        else if (x > value) Node(value, left, right insert x) 
         else this;
 
     def equal(other: BSTree): Boolean =
@@ -20,15 +18,20 @@ case class Node(value: Int, left: BSTree, right: BSTree) extends BSTree {
                                   right.equal(r)
         };
     
-    def depth(): Int =
-        max(1 + left.depth(), 1 + right.depth());
+    def depth: Int =
+        1 + Math.max(left.depth, right.depth);
 
     def exactSubtree(that: BSTree): Boolean =
-        true;
+        that match {
+            case Leaf => false
+            case Node(v, l, r) =>
+                if (value == v) equal(that)
+                else if (value < v) exactSubtree(l)
+                else exactSubtree(r)
+        };
 
     override def toString = "{" +
                             left.toString +
                             value.toString +
-                            right.toString +
-                            "}";
+                            right.toString + "}";
 }
