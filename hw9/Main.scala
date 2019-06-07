@@ -1,4 +1,7 @@
 object Main {
+    /**
+     * Returns index of last instance of x in xs
+     */
     def findLast(xs: List[Int], x: Int): Int = {
         xs match {
             case Nil => -1
