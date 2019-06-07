@@ -4,9 +4,22 @@ object Main {
      */
     def findLast(xs: List[Int], x: Int): Int = {
         xs match {
+            case Nil => -1 // end of list / edge case of empty list
+            case y :: ys => {
+                val i = findLast(ys, x);
+
+                if (i != -1) i + 1 // if it does exist
+                else if (y == x) 0 // has to be after i != 1, last occurrence
+                else -1            // still doesn't exist, -1
+            }
+        };
+    }
+
+    def findLast2(xs: List[Int], x: Int): Int = {
+        xs match {
             case Nil => -1
             case ys => if (x == ys.last) ys.length - 1
-                       else findLast(ys.init, x)
+                       else findLast2(ys.init, x)
         };
     }
 
@@ -55,6 +68,9 @@ object Main {
 
         println(findLast(l, 8)); // 3
         println(findLast(l, 7)); // -1
+
+        println(findLast2(l, 8)); // 3
+        println(findLast2(l, 7)); // -1
 
         // [#4] singleton set testing
         val ss1 = new singletonSet(1);
