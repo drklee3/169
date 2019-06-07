@@ -30,7 +30,7 @@ object Main {
         ss match {
             case Nil => Nil
             case x :: xs =>
-                // this requires f in Set to be a val!! not sure if we can do that
+                // this requires f in Set to be a val!
                 if (x.forall(s.f)) x :: subs(s, xs)
                 else subs(s, xs)
         };
