@@ -1,4 +1,4 @@
-class mySet(f: Int => Boolean) {
+class mySet(val f: Int => Boolean) {
     def contains(elem: Int): Boolean =
         this.f(elem)
 
@@ -42,7 +42,8 @@ class mySet(f: Int => Boolean) {
              .forall(p);
     
     override def toString =
+        "[" +
         -1000.to(1000)
              .filter(f)
-             .mkString(", ");
+             .mkString(", ") + "]";
 }
